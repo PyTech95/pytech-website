@@ -91,6 +91,23 @@ async function handleRoute(request, { params }) {
       return handleCORS(NextResponse.json(leads.map(({ _id, ...rest }) => rest)))
     }
 
+    // ---- Chat sessions (admin) ----
+    if (route === '/chat/sessions' && method === 'GET') {
+      const all = await db.collection('chat_messages').find({}).sort({ createdAt: 1 }).toArray()
+      const map = {}
+      for (const m of all) {
+        if (!map[m.sessionId]) map[m.sessionId] = { sessionId: m.sessionId, messages: [], count: 0 }
+        map[m.sessionId].messages.push({ role: m.role, content: m.content, createdAt: m.createdAt })
+        map[m.sessionId].count++
+      }
+      const sessions = Object.values(map).map((s) => ({
+        ...s,
+        lastAt: s.messages[s.messages.length - 1]?.createdAt || null,
+        preview: (s.messages.find((x) => x.role === 'user') || {}).content || 'Conversation',
+      })).sort((a, b) => new Date(b.lastAt) - new Date(a.lastAt))
+      return handleCORS(NextResponse.json({ sessions }))
+    }
+
     // ---- AI Triage Chat ----
     if (route === '/chat' && method === 'POST') {
       const body = await request.json()

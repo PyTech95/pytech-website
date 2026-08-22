@@ -13,9 +13,7 @@ import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '@/co
 function Logo() {
   return (
     <Link href="/" className="flex items-center gap-2.5">
-      <span className="relative grid h-9 w-9 place-items-center rounded-lg bg-gradient-to-br from-[hsl(var(--brand))] to-[hsl(var(--cobalt))] font-display text-sm font-bold text-white shadow-lg">
-        PT
-      </span>
+      <img src="/pt-logo.png" alt="PyTech Digital" className="h-9 w-9 rounded-lg object-cover shadow-lg ring-1 ring-border" />
       <span className="font-display text-lg font-semibold tracking-tight">
         PyTech<span className="text-primary">.</span>
       </span>

@@ -43,11 +43,13 @@ const orgSchema = {
   sameAs: COMPANY.sameAs,
   address: {
     '@type': 'PostalAddress',
-    addressLocality: 'Noida',
-    addressRegion: 'Uttar Pradesh',
+    streetAddress: '24, 2nd Floor, Institutional Area, Prem Puri, Sector 32',
+    addressLocality: 'Gurugram',
+    addressRegion: 'Haryana',
+    postalCode: '122001',
     addressCountry: 'IN',
   },
-  areaServed: ['Noida', 'Gurugram', 'Delhi NCR', 'India', 'Global'],
+  areaServed: ['Gurugram', 'Delhi NCR', 'Noida', 'India', 'Global'],
 };
 
 export default function RootLayout({ children }) {

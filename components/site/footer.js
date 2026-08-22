@@ -9,12 +9,12 @@ export function Footer() {
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-6">
           <div className="lg:col-span-2">
             <div className="flex items-center gap-2.5">
-              <span className="grid h-9 w-9 place-items-center rounded-lg bg-gradient-to-br from-[hsl(var(--brand))] to-[hsl(var(--cobalt))] font-display text-sm font-bold text-white">PT</span>
+              <img src="/pt-logo.png" alt="PyTech Digital" className="h-9 w-9 rounded-lg object-cover ring-1 ring-border" />
               <span className="font-display text-lg font-semibold">PyTech Digital</span>
             </div>
             <p className="mt-4 max-w-xs text-sm text-muted-foreground">{COMPANY.description}</p>
             <div className="mt-5 space-y-2 text-sm text-muted-foreground">
-              <p className="flex items-center gap-2"><MapPin className="h-4 w-4 text-primary" /> {COMPANY.hq}</p>
+              <p className="flex items-start gap-2"><MapPin className="mt-0.5 h-4 w-4 flex-none text-primary" /> {COMPANY.address}</p>
               <a href={`mailto:${COMPANY.email}`} className="flex items-center gap-2 hover:text-foreground"><Mail className="h-4 w-4 text-primary" /> {COMPANY.email}</a>
               <a href={`tel:${COMPANY.phone}`} className="flex items-center gap-2 hover:text-foreground"><Phone className="h-4 w-4 text-primary" /> {COMPANY.phone}</a>
             </div>

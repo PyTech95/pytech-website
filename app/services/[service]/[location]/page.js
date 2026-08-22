@@ -102,7 +102,7 @@ export default async function ServiceLocationPage({ params }) {
             <Reveal>
               <div className="mt-8 rounded-xl border border-border bg-card/50 p-6">
                 <p className="font-display text-sm font-semibold uppercase tracking-widest text-primary">Why {location.name} businesses choose PyTech</p>
-                <p className="mt-2 text-muted-foreground">Operating from our Noida HQ with a Gurugram delivery team, we bring senior engineering, premium design and AI-first growth to {location.name}. You get a dedicated pod, weekly demos and measurable outcomes — with global delivery standards and local responsiveness.</p>
+                <p className="mt-2 text-muted-foreground">Operating from our Gurugram HQ (Sector 32), we bring senior engineering, premium design and AI-first growth to {location.name}. You get a dedicated pod, weekly demos and measurable outcomes — with global delivery standards and local responsiveness.</p>
               </div>
             </Reveal>
           </div>

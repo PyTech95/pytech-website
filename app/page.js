@@ -46,7 +46,7 @@ export default function HomePage() {
               We <span className="text-gradient">Build</span>, <span className="text-gradient">Brand</span>,<br className="hidden sm:block" /> <span className="text-gradient">Market</span> &amp; <span className="text-gradient">Automate</span><br /> ambitious businesses.
             </motion.h1>
             <motion.p initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.15 }} className="mt-5 max-w-xl text-lg text-muted-foreground">
-              PyTech Digital is a full-stack IT &amp; growth firm from Noida — engineering software, crafting premium brands and deploying AI automation that compounds revenue.
+              PyTech Digital is a full-stack IT &amp; growth firm from Gurugram — engineering software, crafting premium brands and deploying AI automation that compounds revenue.
             </motion.p>
             <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.25 }} className="mt-8 flex flex-wrap items-center gap-3">
               <Magnetic>

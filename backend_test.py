@@ -416,6 +416,198 @@ def test_ai_chatbot():
     log(f"\n✅ PASSED: AI Chatbot fully working with real Gemini integration", "SUCCESS")
     return True
 
+def test_chat_sessions():
+    """Test GET /api/chat/sessions - Admin chat sessions listing (NEW ENDPOINT)"""
+    log("\n" + "=" * 60)
+    log("TEST 5: Chat Sessions Listing (GET /api/chat/sessions) - NEW ENDPOINT")
+    log("=" * 60)
+    
+    session_id = None
+    first_user_message = "I want an app for my startup"
+    second_user_message = "budget is 5 lakh"
+    
+    # Step 1: Create a new chat session with first message
+    log("\n--- Step 1: Create session with first message ---")
+    try:
+        first_message = {
+            "message": first_user_message
+        }
+        
+        response = requests.post(f"{BASE_URL}/chat", json=first_message, timeout=30)
+        log(f"Status Code: {response.status_code}")
+        
+        if response.status_code != 200:
+            log(f"❌ FAILED: Expected 200, got {response.status_code}", "ERROR")
+            log(f"Response: {response.text}", "ERROR")
+            return False
+        
+        data = response.json()
+        
+        if 'sessionId' not in data:
+            log("❌ FAILED: 'sessionId' field missing", "ERROR")
+            return False
+        
+        session_id = data['sessionId']
+        log(f"✅ Session created: {session_id}")
+        log(f"Assistant reply: {data.get('message', '')[:100]}...")
+        
+    except Exception as e:
+        log(f"❌ FAILED: Exception - {str(e)}", "ERROR")
+        return False
+    
+    # Step 2: Send second message with same sessionId
+    log("\n--- Step 2: Send second message with same sessionId ---")
+    try:
+        second_message = {
+            "message": second_user_message,
+            "sessionId": session_id
+        }
+        
+        response = requests.post(f"{BASE_URL}/chat", json=second_message, timeout=30)
+        log(f"Status Code: {response.status_code}")
+        
+        if response.status_code != 200:
+            log(f"❌ FAILED: Expected 200, got {response.status_code}", "ERROR")
+            log(f"Response: {response.text}", "ERROR")
+            return False
+        
+        data = response.json()
+        
+        if data.get('sessionId') != session_id:
+            log(f"❌ FAILED: Session ID mismatch", "ERROR")
+            return False
+        
+        log(f"✅ Second message sent successfully")
+        log(f"Assistant reply: {data.get('message', '')[:100]}...")
+        
+    except Exception as e:
+        log(f"❌ FAILED: Exception - {str(e)}", "ERROR")
+        return False
+    
+    # Step 3: Get all chat sessions
+    log("\n--- Step 3: Get all chat sessions (GET /api/chat/sessions) ---")
+    try:
+        response = requests.get(f"{BASE_URL}/chat/sessions", timeout=10)
+        log(f"Status Code: {response.status_code}")
+        
+        if response.status_code != 200:
+            log(f"❌ FAILED: Expected 200, got {response.status_code}", "ERROR")
+            log(f"Response: {response.text}", "ERROR")
+            return False
+        
+        data = response.json()
+        
+        # Verify response structure
+        if 'sessions' not in data:
+            log("❌ FAILED: 'sessions' field missing", "ERROR")
+            return False
+        
+        sessions = data['sessions']
+        
+        if not isinstance(sessions, list):
+            log("❌ FAILED: 'sessions' is not an array", "ERROR")
+            return False
+        
+        log(f"Total sessions: {len(sessions)}")
+        
+        # Find our session
+        our_session = None
+        for session in sessions:
+            if session.get('sessionId') == session_id:
+                our_session = session
+                break
+        
+        if not our_session:
+            log(f"❌ FAILED: Our session {session_id} not found in sessions list", "ERROR")
+            return False
+        
+        log(f"✅ Found our session: {session_id}")
+        
+        # Verify session structure
+        required_fields = ['sessionId', 'count', 'lastAt', 'preview', 'messages']
+        for field in required_fields:
+            if field not in our_session:
+                log(f"❌ FAILED: Required field '{field}' missing in session", "ERROR")
+                return False
+        
+        log(f"✅ All required fields present: {', '.join(required_fields)}")
+        
+        # Verify count >= 4 (2 user + 2 assistant)
+        count = our_session['count']
+        log(f"Message count: {count}")
+        
+        if count < 4:
+            log(f"❌ FAILED: Expected count >= 4, got {count}", "ERROR")
+            return False
+        
+        log(f"✅ Count is correct: {count} >= 4")
+        
+        # Verify messages array
+        messages = our_session['messages']
+        
+        if not isinstance(messages, list):
+            log("❌ FAILED: 'messages' is not an array", "ERROR")
+            return False
+        
+        if len(messages) < 4:
+            log(f"❌ FAILED: Expected at least 4 messages, got {len(messages)}", "ERROR")
+            return False
+        
+        log(f"✅ Messages array has {len(messages)} messages")
+        
+        # Verify messages are in chronological order (oldest first)
+        log("\n--- Verifying chronological order ---")
+        prev_timestamp = None
+        for i, msg in enumerate(messages):
+            if 'role' not in msg or 'content' not in msg or 'createdAt' not in msg:
+                log(f"❌ FAILED: Message {i+1} missing required fields", "ERROR")
+                return False
+            
+            current_timestamp = msg['createdAt']
+            log(f"Message {i+1}: {msg['role']} - {msg['content'][:50]}... (at {current_timestamp})")
+            
+            if prev_timestamp:
+                # Compare timestamps (they should be in ascending order)
+                if current_timestamp < prev_timestamp:
+                    log(f"❌ FAILED: Messages not in chronological order", "ERROR")
+                    return False
+            
+            prev_timestamp = current_timestamp
+        
+        log(f"✅ Messages are in chronological order (oldest first)")
+        
+        # Verify preview equals first user message
+        preview = our_session['preview']
+        log(f"\nPreview: '{preview}'")
+        log(f"Expected (first user message): '{first_user_message}'")
+        
+        if preview != first_user_message:
+            log(f"❌ FAILED: Preview does not match first user message", "ERROR")
+            log(f"Expected: '{first_user_message}'", "ERROR")
+            log(f"Got: '{preview}'", "ERROR")
+            return False
+        
+        log(f"✅ Preview matches first user message")
+        
+        # Verify lastAt is a valid timestamp
+        last_at = our_session['lastAt']
+        log(f"Last activity: {last_at}")
+        
+        if not last_at:
+            log("❌ FAILED: lastAt is null or empty", "ERROR")
+            return False
+        
+        log(f"✅ lastAt is valid: {last_at}")
+        
+        log(f"\n✅ PASSED: Chat sessions endpoint fully working", "SUCCESS")
+        return True
+        
+    except Exception as e:
+        log(f"❌ FAILED: Exception - {str(e)}", "ERROR")
+        import traceback
+        log(traceback.format_exc(), "ERROR")
+        return False
+
 def main():
     """Run all backend tests"""
     log("=" * 60)
@@ -427,14 +619,19 @@ def main():
         "Health Endpoint": False,
         "Services Metadata": False,
         "Leads CRUD": False,
-        "AI Chatbot (Gemini)": False
+        "AI Chatbot (Gemini)": False,
+        "Chat Sessions Listing (NEW)": False
     }
     
     # Run tests in priority order (high first)
-    results["AI Chatbot (Gemini)"] = test_ai_chatbot()
-    results["Leads CRUD"] = test_leads_crud()
-    results["Services Metadata"] = test_services_endpoint()
+    # NEW endpoint test first (primary focus)
+    results["Chat Sessions Listing (NEW)"] = test_chat_sessions()
+    
+    # Quick regression tests
     results["Health Endpoint"] = test_health_endpoint()
+    results["Services Metadata"] = test_services_endpoint()
+    results["Leads CRUD"] = test_leads_crud()
+    results["AI Chatbot (Gemini)"] = test_ai_chatbot()
     
     # Summary
     log("\n" + "=" * 60)
