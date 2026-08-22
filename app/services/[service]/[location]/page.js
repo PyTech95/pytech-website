@@ -195,7 +195,7 @@ export default async function ServiceLocationPage({ params }) {
             <h2 className="font-display text-3xl font-bold md:text-4xl">Ready to start your {service.name} project in {location.name}?</h2>
             <p className="mt-4 max-w-md text-muted-foreground">Get a free, no-obligation quote and a tailored plan from our team.</p>
           </Reveal>
-          <Reveal delay={0.1}><LeadForm /></Reveal>
+          <Reveal delay={0.1}><LeadForm context={`service:${sSlug}@${lSlug}`} defaultService={service.name} /></Reveal>
         </div>
       </section>
     </article>

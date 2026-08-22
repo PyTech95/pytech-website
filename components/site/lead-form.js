@@ -37,12 +37,12 @@ function Choice({ active, children, ...props }) {
   );
 }
 
-export function LeadForm() {
+export function LeadForm({ context = 'website', defaultService = '' }) {
   const [step, setStep] = useState(0);
   const [done, setDone] = useState(false);
   const { register, handleSubmit, watch, setValue, trigger, formState: { errors, isSubmitting } } = useForm({
     resolver: zodResolver(schema),
-    defaultValues: { name: '', company: '', email: '', phone: '', service: '', budget: '', timeline: '', message: '' },
+    defaultValues: { name: '', company: '', email: '', phone: '', service: defaultService, budget: '', timeline: '', message: '' },
     mode: 'onTouched',
   });
 
@@ -59,7 +59,7 @@ export function LeadForm() {
       const res = await fetch('/api/leads', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...data, source: 'lead-form' }),
+        body: JSON.stringify({ ...data, source: 'lead-form', pageSource: context }),
       });
       if (!res.ok) throw new Error('Failed');
       setDone(true);

@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 export const metadata = {
   title: 'Case Studies — Measurable Growth Outcomes',
   description: 'Deep-dive case studies from PyTech Digital — fintech platforms, WhatsApp automation and GEO/SEO growth with measurable results.',
+  alternates: { canonical: '/case-studies' },
 };
 
 const IMG = {

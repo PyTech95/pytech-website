@@ -190,7 +190,7 @@ export default async function ServiceDetailPage({ params }) {
             <h2 className="font-display text-3xl font-bold md:text-4xl">Start your {service.name} project</h2>
             <p className="mt-4 max-w-md text-muted-foreground">Get a free quote and a tailored plan from our senior team.</p>
           </Reveal>
-          <Reveal delay={0.1}><LeadForm /></Reveal>
+          <Reveal delay={0.1}><LeadForm context={`service:${slug}`} defaultService={service.name} /></Reveal>
         </div>
       </section>
     </article>

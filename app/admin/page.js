@@ -210,6 +210,7 @@ export default function AdminPage() {
                     {l.budget && <span className="rounded-full border border-border px-2.5 py-1 text-xs text-muted-foreground">Budget: {l.budget}</span>}
                     {l.timeline && <span className="rounded-full border border-border px-2.5 py-1 text-xs text-muted-foreground">Timeline: {l.timeline}</span>}
                     {l.source && <span className="rounded-full border border-border px-2.5 py-1 text-xs text-muted-foreground">via {l.source}</span>}
+                    {l.pageSource && <span className="rounded-full border border-primary/30 bg-primary/10 px-2.5 py-1 text-xs text-primary">from: {l.pageSource}</span>}
                   </div>
                   {l.message && <p className="mt-3 rounded-lg bg-background/50 p-3 text-sm text-muted-foreground">{l.message}</p>}
                   <p className="mt-3 flex items-center gap-1.5 text-xs text-muted-foreground/70"><Clock className="h-3 w-3" /> {fmt(l.createdAt)}</p>

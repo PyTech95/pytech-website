@@ -91,6 +91,7 @@ async function handleRoute(request, { params }) {
         timeline: body.timeline || '',
         message: body.message || '',
         source: body.source || 'website',
+        pageSource: body.pageSource || '',
         createdAt: new Date(),
       }
       await db.collection('leads').insertOne(lead)

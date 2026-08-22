@@ -8,6 +8,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 export const metadata = {
   title: 'Support Center — We\u2019re here to help',
   description: 'Get support from PyTech Digital via WhatsApp, email or phone. Raise a request and our team responds within one business day.',
+  alternates: { canonical: '/support' },
 };
 
 const FAQ = [
@@ -59,7 +60,7 @@ export default function SupportPage() {
             </Accordion>
           </div>
         </Reveal>
-        <Reveal delay={0.1}><LeadForm /></Reveal>
+        <Reveal delay={0.1}><LeadForm context="support" /></Reveal>
       </div>
     </div>
   );

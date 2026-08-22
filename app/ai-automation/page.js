@@ -77,7 +77,7 @@ export default function AiAutomationPage() {
             <h2 className="font-display text-3xl font-bold md:text-4xl">Book a free automation demo.</h2>
             <p className="mt-4 max-w-md text-muted-foreground">See exactly how WhatsApp, SMS and voice automation would work for your business. We&apos;ll map a plan in one call.</p>
           </Reveal>
-          <Reveal delay={0.1}><LeadForm /></Reveal>
+          <Reveal delay={0.1}><LeadForm context="ai-automation" /></Reveal>
         </div>
       </section>
     </div>

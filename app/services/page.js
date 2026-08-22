@@ -7,6 +7,7 @@ import { Reveal } from '@/components/site/reveal';
 export const metadata = {
   title: 'Services — Build, Brand, Market & Automate',
   description: 'Explore PyTech Digital services across four pillars: BUILD (web, mobile, software), BRAND (identity, 3D, UI/UX), MARKET (SEO, AI SEO, GEO) and AUTOMATE (WhatsApp, SMS, voice, workflow AI).',
+  alternates: { canonical: '/services' },
 };
 
 export default function ServicesIndexPage() {

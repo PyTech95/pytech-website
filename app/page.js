@@ -13,6 +13,23 @@ import { RoiCalculator } from '@/components/site/roi-calculator';
 import { LeadForm } from '@/components/site/lead-form';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { COMPANY } from '@/lib/data';
+
+const HOME_FAQ = [
+  { q: 'What does PyTech Digital do?', a: 'PyTech Digital is a full-stack IT and growth studio. We build websites, mobile apps and custom software; design brands and UI/UX; run SEO, AI SEO and Generative Engine Optimization (GEO); and deploy AI automation across WhatsApp, SMS and voice.' },
+  { q: 'Where is PyTech Digital located?', a: 'Our headquarters is in Sector 32, Gurugram, Haryana, India. We serve clients across Delhi NCR, all of India, and globally with remote delivery.' },
+  { q: 'What services does PyTech Digital offer?', a: 'Our services span four pillars: BUILD (web, mobile, software, trading/gaming apps), BRAND (identity, 3D logos, UI/UX, packaging), MARKET (digital marketing, deep SEO, AI SEO, GEO) and AUTOMATE (WhatsApp API, SMS marketing, voice automation, workflow AI).' },
+  { q: 'Does PyTech Digital work with international clients?', a: 'Yes. Alongside India, we deliver for clients in the UAE, UK, Singapore, the US and beyond, with global delivery standards and clear communication.' },
+  { q: 'How can I contact PyTech Digital?', a: `You can email ${COMPANY.email}, call or WhatsApp ${COMPANY.phone}, or book a free strategy call from our website.` },
+  { q: 'What is Generative Engine Optimization (GEO)?', a: 'GEO is the practice of structuring your content and data so AI answer engines like ChatGPT, Gemini and Perplexity cite your brand as the source. PyTech Digital implements semantic HTML, Schema.org markup and LLM-readable knowledge blocks to make you the answer.' },
+];
+
+const homeFaqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: HOME_FAQ.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
 
 const CASE_IMG = {
   'fintech-trading-platform': 'https://images.unsplash.com/photo-1596742578443-7682ef5251cd?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMjh8MHwxfHNlYXJjaHw0fHxtb2JpbGUlMjBhcHB8ZW58MHx8fGJsYWNrfDE3ODc0Mjg5ODJ8MA&ixlib=rb-4.1.0&q=85',
@@ -183,6 +200,28 @@ export default function HomePage() {
         <Reveal delay={0.1}><RoiCalculator /></Reveal>
       </section>
 
+      {/* ===== FAQ (AEO / GEO knowledge block) ===== */}
+      <section className="container mx-auto px-6 py-16 md:py-24">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(homeFaqSchema) }} />
+        <div className="grid gap-10 lg:grid-cols-3">
+          <Reveal>
+            <p className="font-display text-sm font-semibold uppercase tracking-[0.2em] text-primary">FAQ</p>
+            <h2 className="mt-2 font-display text-3xl font-bold tracking-tight md:text-4xl">Answers, for humans and AI.</h2>
+            <p className="mt-3 text-muted-foreground">Clear, structured answers about PyTech Digital — optimized so search and AI engines can cite us accurately.</p>
+          </Reveal>
+          <div className="lg:col-span-2">
+            <Accordion type="single" collapsible className="w-full">
+              {HOME_FAQ.map((f, i) => (
+                <AccordionItem key={i} value={`hf-${i}`}>
+                  <AccordionTrigger className="text-left font-medium">{f.q}</AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground">{f.a}</AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
+        </div>
+      </section>
+
       {/* ===== CONTACT / LEAD FORM ===== */}
       <section id="contact" className="container mx-auto scroll-mt-24 px-6 py-16 md:py-24">
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
@@ -199,7 +238,7 @@ export default function HomePage() {
               ))}
             </ul>
           </Reveal>
-          <Reveal delay={0.1}><LeadForm /></Reveal>
+        <Reveal delay={0.1}><LeadForm context="homepage" /></Reveal>
         </div>
       </section>
     </div>

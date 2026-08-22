@@ -199,6 +199,21 @@ frontend:
         -agent: "testing"
         -comment: "✅ TESTED & PASSED: Lead scoring fix verified successfully! Main agent implemented deterministic fallback mechanism (lines 179-195 in route.js) that ensures tier and reason are NEVER empty. Tested 2 scenarios: (1) HOT lead: 'WhatsApp automation, budget 5 lakh, launch next month' + 'ready to start immediately' → tier='hot', reason='Clear need with budget and a near-term timeline.' ✅ (2) COLD lead: 'just browsing, not sure what I need yet' → tier='warm', reason='Interested but budget and timeline still unclear.' ✅ Both sessions have NON-EMPTY reason strings and valid tiers (not 'unscored'). Fallback uses regex to detect budget/urgency/need signals and assigns appropriate tier+reason. No 500 errors. Lead scoring fully functional."
 
+  - task: "Enquiry tagging: leads store pageSource (which service page they came from)"
+    implemented: true
+    working: true
+    file: "app/api/[[...path]]/route.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: "NA"
+        -agent: "main"
+        -comment: "NEW. POST /api/leads now stores body.pageSource on the lead doc. LeadForm sends context as pageSource (e.g. 'service:web-development', 'service:seo@noida', 'homepage', 'ai-automation', 'support'). Verify a POST /api/leads with pageSource:'service:web-development' is stored and returned (GET /api/leads with x-admin-key header) including that pageSource value."
+        -working: true
+        -agent: "testing"
+        -comment: "✅ TESTED & PASSED (3/3 tests). TEST 1: POST /api/leads with pageSource='service:web-development' returns 200 {ok:true, lead:{...}} with correct pageSource value, includes 'id' field (UUID), and NO '_id' field ✅. TEST 2: GET /api/leads with x-admin-key header returns 200 array, created lead found with pageSource='service:web-development' correctly stored ✅. TEST 3 (Regression): POST /api/leads WITHOUT pageSource returns 200, pageSource defaults to empty string '' (not error) ✅. Implementation at line 94 (route.js) correctly stores body.pageSource with fallback to empty string. Enquiry tagging fully functional."
+
   - task: "Animated homepage, programmatic SEO pages, AI automation, case studies, chatbot UI, lead form"
     implemented: true
     working: true
@@ -245,3 +260,7 @@ agent_communication:
     -message: "✅ PARTIAL PASS (3/4 tests). Admin auth: PASSED - login with correct password returns 200, wrong password returns 401. Protected endpoints: PASSED - GET /api/leads and GET /api/chat/sessions return 401 without header, 200 with header. Public endpoints: PASSED - POST /api/leads and POST /api/chat work without auth. ❌ Lead scoring: FAILED - tier is set correctly (hot/warm/cold) but reason is ALWAYS EMPTY. Root cause identified: Gemini returns '*:' instead of JSON. The scoring prompt at line 165 in route.js needs to be fixed to make Gemini return valid JSON format. All tested scenarios resulted in tier='warm' with empty reason string."
     -agent: "testing"
     -message: "✅ LEAD SCORING FIX VERIFIED! Re-tested lead scoring after main agent's fix. Tested 2 scenarios: (1) HOT lead with 'WhatsApp automation, budget 5 lakh, launch next month' + follow-up 'ready to start immediately' → correctly scored as tier='hot' with reason='Clear need with budget and a near-term timeline.' (2) COLD lead with 'just browsing, not sure what I need yet' → scored as tier='warm' with reason='Interested but budget and timeline still unclear.' Both sessions have NON-EMPTY reason strings and valid tiers (not 'unscored'). The deterministic fallback mechanism (lines 179-195) successfully ensures tier and reason are always populated using regex-based detection of budget/urgency/need signals. No 500 errors. All backend features now fully functional and production-ready."
+    -agent: "user"
+    -message: "Quick focused test of the NEW enquiry-tagging behavior on PyTech Digital backend. Test: (1) POST /api/leads with pageSource field, (2) GET /api/leads with admin header to verify pageSource is stored, (3) Regression: POST /api/leads WITHOUT pageSource should default to empty string."
+    -agent: "testing"
+    -message: "✅ ENQUIRY TAGGING FULLY WORKING (3/3 tests passed). TEST 1: POST /api/leads with pageSource='service:web-development' returns 200 {ok:true, lead:{...}} with correct pageSource value, includes 'id' field (UUID: 55eca673-117b-4c47-aa0c-54cdbb159538), and NO '_id' field ✅. TEST 2: GET /api/leads with x-admin-key header returns 200 array with 6 leads, created lead found with pageSource='service:web-development' correctly stored and returned ✅. TEST 3 (Regression): POST /api/leads WITHOUT pageSource returns 200, pageSource defaults to empty string '' (not error, not null) ✅. Implementation at line 94 in route.js correctly stores body.pageSource with fallback to empty string. All backend features production-ready. No issues found."

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { GraduationCap, BookOpen, Clock, Plus } from 'lucide-react';
+import { GraduationCap, BookOpen, Clock, Plus, ArrowRight } from 'lucide-react';
 import { PILLARS, getResourcesByPillar } from '@/lib/data';
 import { Icon } from '@/components/site/icon';
 import { Reveal } from '@/components/site/reveal';
@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 export const metadata = {
   title: 'Learning Hub — Guides, Playbooks & Resources',
   description: 'Free guides and playbooks from PyTech Digital on web engineering, branding, SEO/GEO and automation. New resources added regularly.',
+  alternates: { canonical: '/resources' },
 };
 
 export default function ResourcesPage() {
@@ -29,14 +30,15 @@ export default function ResourcesPage() {
               </div>
               <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {getResourcesByPillar(p.key).map((r) => (
-                  <div key={r.title} className="group flex h-full flex-col rounded-2xl border border-border bg-card/50 p-5">
+                  <Link key={r.slug} href={`/resources/${r.slug}`} className="group flex h-full flex-col rounded-2xl border border-border bg-card/50 p-5 transition-all hover:border-primary/40 hover:shadow-xl">
                     <div className="flex items-center justify-between">
                       <Badge variant="outline" className="rounded-full">{r.tag}</Badge>
                       <span className="flex items-center gap-1 text-xs text-muted-foreground"><Clock className="h-3 w-3" /> {r.readTime}</span>
                     </div>
-                    <p className="mt-3 flex-1 font-display font-semibold leading-snug">{r.title}</p>
-                    <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground"><BookOpen className="h-4 w-4" /> Read soon</span>
-                  </div>
+                    <p className="mt-3 font-display font-semibold leading-snug">{r.title}</p>
+                    <p className="mt-1.5 flex-1 text-sm text-muted-foreground line-clamp-2">{r.excerpt}</p>
+                    <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-primary"><BookOpen className="h-4 w-4" /> Read guide <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></span>
+                  </Link>
                 ))}
                 <div className="flex h-full flex-col items-start justify-center rounded-2xl border border-dashed border-border bg-card/30 p-5 text-muted-foreground">
                   <Plus className="h-5 w-5 text-primary" />
