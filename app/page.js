@@ -103,7 +103,7 @@ export default function HomePage() {
                 </div>
                 <div className="mt-5 grid grid-cols-2 gap-2">
                   {getServicesByPillar(p.key).map((s) => (
-                    <Link key={s.slug} href={`/services/${s.slug}/noida`} className="flex items-center gap-2 rounded-lg border border-transparent bg-background/40 px-3 py-2 text-sm text-muted-foreground transition-all hover:border-border hover:text-foreground">
+                    <Link key={s.slug} href={`/services/${s.slug}`} className="flex items-center gap-2 rounded-lg border border-transparent bg-background/40 px-3 py-2 text-sm text-muted-foreground transition-all hover:border-border hover:text-foreground">
                       <Icon name={s.icon} className="h-4 w-4 opacity-70" />
                       <span className="truncate">{s.name}</span>
                     </Link>

@@ -44,7 +44,7 @@ export function Navbar() {
                     {getServicesByPillar(p.key).map((s) => (
                       <Link
                         key={s.slug}
-                        href={`/services/${s.slug}/noida`}
+                        href={`/services/${s.slug}`}
                         className="flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
                       >
                         <Icon name={s.icon} className="h-4 w-4 opacity-70" />
@@ -58,6 +58,8 @@ export function Navbar() {
           </div>
           <Link href="/case-studies" className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">Case Studies</Link>
           <Link href="/ai-automation" className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">AI Automation</Link>
+          <Link href="/resources" className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">Resources</Link>
+          <Link href="/support" className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">Support</Link>
           <Link href="/#contact" className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">Contact</Link>
         </nav>
 
@@ -83,12 +85,15 @@ export function Navbar() {
                   <div key={p.key} className="mb-2">
                     <p className="mb-1 text-xs font-semibold uppercase tracking-widest" style={{ color: p.accent }}>{p.label}</p>
                     {getServicesByPillar(p.key).map((s) => (
-                      <Link key={s.slug} href={`/services/${s.slug}/noida`} onClick={() => setOpen(false)} className="block rounded-md px-2 py-1.5 text-sm text-muted-foreground hover:text-foreground">{s.name}</Link>
+                      <Link key={s.slug} href={`/services/${s.slug}`} onClick={() => setOpen(false)} className="block rounded-md px-2 py-1.5 text-sm text-muted-foreground hover:text-foreground">{s.name}</Link>
                     ))}
                   </div>
                 ))}
                 <Link href="/case-studies" onClick={() => setOpen(false)} className="rounded-md px-2 py-2 font-medium">Case Studies</Link>
                 <Link href="/ai-automation" onClick={() => setOpen(false)} className="rounded-md px-2 py-2 font-medium">AI Automation</Link>
+                <Link href="/services" onClick={() => setOpen(false)} className="rounded-md px-2 py-2 font-medium">All Services</Link>
+                <Link href="/resources" onClick={() => setOpen(false)} className="rounded-md px-2 py-2 font-medium">Resources</Link>
+                <Link href="/support" onClick={() => setOpen(false)} className="rounded-md px-2 py-2 font-medium">Support</Link>
                 <Button asChild className="mt-3 rounded-full"><Link href="/#contact" onClick={() => setOpen(false)}>Book Strategy Call</Link></Button>
               </div>
             </SheetContent>

@@ -18,6 +18,12 @@ export function Footer() {
               <a href={`mailto:${COMPANY.email}`} className="flex items-center gap-2 hover:text-foreground"><Mail className="h-4 w-4 text-primary" /> {COMPANY.email}</a>
               <a href={`tel:${COMPANY.phone}`} className="flex items-center gap-2 hover:text-foreground"><Phone className="h-4 w-4 text-primary" /> {COMPANY.phone}</a>
             </div>
+            <div className="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-sm">
+              <Link href="/services" className="text-muted-foreground transition-colors hover:text-foreground">Services</Link>
+              <Link href="/resources" className="text-muted-foreground transition-colors hover:text-foreground">Learning Hub</Link>
+              <Link href="/support" className="text-muted-foreground transition-colors hover:text-foreground">Support</Link>
+              <Link href="/case-studies" className="text-muted-foreground transition-colors hover:text-foreground">Case Studies</Link>
+            </div>
           </div>
           {PILLARS.map((p) => (
             <div key={p.key}>
@@ -25,7 +31,7 @@ export function Footer() {
               <ul className="mt-3 space-y-2">
                 {getServicesByPillar(p.key).map((s) => (
                   <li key={s.slug}>
-                    <Link href={`/services/${s.slug}/noida`} className="text-sm text-muted-foreground transition-colors hover:text-foreground">{s.name}</Link>
+                    <Link href={`/services/${s.slug}`} className="text-sm text-muted-foreground transition-colors hover:text-foreground">{s.name}</Link>
                   </li>
                 ))}
               </ul>

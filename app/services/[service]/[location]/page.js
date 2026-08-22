@@ -5,6 +5,7 @@ import { getService, getLocation, buildLocalFaqs, getCaseStudy, SERVICES, LOCATI
 import { Icon } from '@/components/site/icon';
 import { Reveal } from '@/components/site/reveal';
 import { LeadForm } from '@/components/site/lead-form';
+import { ServiceExtras } from '@/components/site/service-extras';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
@@ -157,6 +158,12 @@ export default async function ServiceLocationPage({ params }) {
             ))}
           </Accordion>
         </div>
+      </section>
+
+      {/* Support & resources */}
+      <section className="container mx-auto px-6 py-6">
+        <Reveal><h2 className="mb-6 font-display text-xl font-bold md:text-2xl">Support &amp; resources</h2></Reveal>
+        <ServiceExtras />
       </section>
 
       {/* Related + other locations (internal linking for SEO) */}
