@@ -1,5 +1,4 @@
 import { SERVICES, LOCATIONS, CASE_STUDIES, RESOURCES, COMPANY } from '@/lib/data';
-
 export default function sitemap() {
   const base = COMPANY.url.replace(/\/$/, '');
   const now = new Date();
@@ -7,6 +6,7 @@ export default function sitemap() {
   const staticUrls = [
     { path: '', priority: 1, freq: 'weekly' },
     { path: '/services', priority: 0.9, freq: 'weekly' },
+    { path: '/locations', priority: 0.8, freq: 'weekly' },
     { path: '/ai-automation', priority: 0.9, freq: 'weekly' },
     { path: '/case-studies', priority: 0.8, freq: 'weekly' },
     { path: '/resources', priority: 0.7, freq: 'weekly' },
@@ -15,6 +15,10 @@ export default function sitemap() {
 
   const serviceDetailUrls = SERVICES.map((s) => ({
     url: `${base}/services/${s.slug}`, lastModified: now, changeFrequency: 'weekly', priority: 0.8,
+  }));
+
+  const locationHubUrls = LOCATIONS.map((l) => ({
+    url: `${base}/locations/${l.slug}`, lastModified: now, changeFrequency: 'weekly', priority: l.hub ? 0.8 : 0.6,
   }));
 
   const caseUrls = CASE_STUDIES.map((c) => ({
@@ -37,5 +41,5 @@ export default function sitemap() {
     }
   }
 
-  return [...staticUrls, ...serviceDetailUrls, ...caseUrls, ...resourceUrls, ...serviceLocationUrls];
+  return [...staticUrls, ...serviceDetailUrls, ...locationHubUrls, ...caseUrls, ...resourceUrls, ...serviceLocationUrls];
 }

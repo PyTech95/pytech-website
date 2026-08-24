@@ -18,7 +18,7 @@ export async function generateMetadata({ params }) {
   const service = getService(sSlug);
   const location = getLocation(lSlug);
   if (!service || !location) return { title: 'Not found' };
-  const title = `${service.name} in ${location.name} | PyTech Digital`;
+  const title = `${service.name} in ${location.name}`;
   const description = `${service.name} services in ${location.name}, ${location.region}. ${service.summary} Book a free strategy call with PyTech Digital.`;
   return {
     title,

@@ -57,6 +57,7 @@ export function Navbar() {
             </div>
           </div>
           <Link href="/case-studies" className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">Case Studies</Link>
+          <Link href="/locations" className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">Locations</Link>
           <Link href="/ai-automation" className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">AI Automation</Link>
           <Link href="/resources" className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">Resources</Link>
           <Link href="/support" className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">Support</Link>
@@ -92,6 +93,7 @@ export function Navbar() {
                 <Link href="/case-studies" onClick={() => setOpen(false)} className="rounded-md px-2 py-2 font-medium">Case Studies</Link>
                 <Link href="/ai-automation" onClick={() => setOpen(false)} className="rounded-md px-2 py-2 font-medium">AI Automation</Link>
                 <Link href="/services" onClick={() => setOpen(false)} className="rounded-md px-2 py-2 font-medium">All Services</Link>
+                <Link href="/locations" onClick={() => setOpen(false)} className="rounded-md px-2 py-2 font-medium">Locations</Link>
                 <Link href="/resources" onClick={() => setOpen(false)} className="rounded-md px-2 py-2 font-medium">Resources</Link>
                 <Link href="/support" onClick={() => setOpen(false)} className="rounded-md px-2 py-2 font-medium">Support</Link>
                 <Button asChild className="mt-3 rounded-full"><Link href="/#contact" onClick={() => setOpen(false)}>Book Strategy Call</Link></Button>

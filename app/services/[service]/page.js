@@ -25,7 +25,7 @@ export async function generateMetadata({ params }) {
   const { service: slug } = await params;
   const service = getService(slug);
   if (!service) return { title: 'Service not found' };
-  const title = `${service.name} Services | PyTech Digital`;
+  const title = `${service.name} Services`;
   const description = `${service.tagline} ${service.summary}`;
   return { title, description, alternates: { canonical: `${COMPANY.url}/services/${slug}` }, openGraph: { title, description } };
 }
