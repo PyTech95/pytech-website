@@ -6,6 +6,7 @@ import { Footer } from '@/components/site/footer';
 import { TriageChatbot } from '@/components/site/triage-chatbot';
 import { WhatsAppFab } from '@/components/site/whatsapp-fab';
 import { CursorGlow } from '@/components/site/cursor-glow';
+import { Analytics } from '@/components/site/analytics';
 import { COMPANY } from '@/lib/data';
 
 const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-space', display: 'swap' });
@@ -41,6 +42,7 @@ export const metadata = {
     follow: true,
     googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1, 'max-video-preview': -1 },
   },
+  verification: process.env.NEXT_PUBLIC_GSC_VERIFICATION ? { google: process.env.NEXT_PUBLIC_GSC_VERIFICATION } : undefined,
 };
 
 export const viewport = {
@@ -108,6 +110,7 @@ export default function RootLayout({ children }) {
           <WhatsAppFab />
           <TriageChatbot />
         </Providers>
+        <Analytics />
       </body>
     </html>
   );
