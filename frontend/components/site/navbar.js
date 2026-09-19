@@ -33,26 +33,37 @@ export function Navbar() {
             <button data-testid="nav-services-menu" className="flex items-center gap-1 rounded-md px-2 py-2 text-[13px] font-medium text-muted-foreground transition-colors hover:text-foreground">
               Services <ChevronDown className="h-4 w-4 transition-transform group-hover:rotate-180" />
             </button>
-            <div className="invisible absolute left-1/2 top-full w-[720px] -translate-x-1/2 pt-3 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100">
-              <div className="glass grid max-h-[65vh] grid-cols-2 gap-2 overflow-y-auto rounded-2xl p-3 shadow-2xl">
-                {PILLARS.map((p) => (
-                  <div key={p.key} className="rounded-xl p-2">
-                    <p className="mb-1 flex items-center gap-2 px-2 text-xs font-semibold uppercase tracking-widest" style={{ color: p.accent }}>
-                      <Icon name={p.icon} className="h-3.5 w-3.5" /> {p.label}
-                    </p>
-                    {services.filter((s) => s.pillar === p.key).map((s) => (
-                      <Link
-                        key={s.slug}
-                        data-testid={`nav-service-${s.slug}`}
-                        href={`/services/${s.slug}`}
-                        className="flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
-                      >
-                        <Icon name={s.icon} className="h-4 w-4 opacity-70" />
-                        {s.name}
-                      </Link>
-                    ))}
-                  </div>
-                ))}
+            <div className="invisible absolute left-0 top-full w-[760px] max-w-[calc(100vw-2rem)] pt-3 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100">
+              <div className="overflow-hidden rounded-2xl border border-border bg-[hsl(var(--popover))] shadow-[0_24px_70px_-15px_rgba(0,0,0,0.85)] ring-1 ring-black/5">
+                <div className="grid max-h-[70vh] grid-cols-2 gap-1 overflow-y-auto p-4">
+                  {PILLARS.map((p) => (
+                    <div key={p.key} className="rounded-xl p-2">
+                      <p className="mb-2 flex items-center gap-2 px-2 text-xs font-semibold uppercase tracking-widest" style={{ color: p.accent }}>
+                        <Icon name={p.icon} className="h-3.5 w-3.5" /> {p.label}
+                      </p>
+                      {services.filter((s) => s.pillar === p.key).map((s) => (
+                        <Link
+                          key={s.slug}
+                          data-testid={`nav-service-${s.slug}`}
+                          href={`/services/${s.slug}`}
+                          className="group/item flex items-start gap-3 rounded-lg px-2 py-2 transition-colors hover:bg-secondary"
+                        >
+                          <span className="mt-0.5 grid h-8 w-8 flex-none place-items-center rounded-lg bg-secondary text-foreground/80 transition-colors group-hover/item:text-foreground" style={{ boxShadow: `inset 0 0 0 1px ${p.accent}33` }}>
+                            <Icon name={s.icon} className="h-4 w-4" />
+                          </span>
+                          <span className="min-w-0">
+                            <span className="block text-sm font-medium text-foreground">{s.name}</span>
+                            {s.tagline ? <span className="block truncate text-xs text-muted-foreground">{s.tagline}</span> : null}
+                          </span>
+                        </Link>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+                <Link href="/services" className="flex items-center justify-between border-t border-border bg-secondary/40 px-5 py-3 text-sm font-medium text-foreground transition-colors hover:bg-secondary" data-testid="nav-all-services">
+                  <span>Explore all services</span>
+                  <ArrowUpRight className="h-4 w-4" />
+                </Link>
               </div>
             </div>
           </div>
