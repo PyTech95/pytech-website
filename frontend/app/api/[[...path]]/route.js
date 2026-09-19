@@ -366,6 +366,16 @@ async function handleRoute(request, { params }) {
       else await db.collection('seo').updateOne({ path: b.path }, { $set: set }, { upsert: true })
       return handleCORS(NextResponse.json({ ok: true }))
     }
+    if (route === '/seo/verification' && method === 'GET') {
+      const v = await db.collection('settings').findOne({ _id: 'seo_verify' })
+      return handleCORS(NextResponse.json({ google: v?.google || '', bing: v?.bing || '' }))
+    }
+    if (route === '/seo/verification' && method === 'PUT') {
+      if (!isAdmin()) return handleCORS(NextResponse.json({ error: 'Unauthorized' }, { status: 401 }))
+      const b = await request.json()
+      await db.collection('settings').updateOne({ _id: 'seo_verify' }, { $set: { google: (b.google || '').trim(), bing: (b.bing || '').trim(), updatedAt: new Date() } }, { upsert: true })
+      return handleCORS(NextResponse.json({ ok: true }))
+    }
 
     // ---- Careers: application submission (multipart with resume) ----
     if (route === '/careers/apply' && method === 'POST') {

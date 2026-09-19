@@ -7,7 +7,7 @@ import { TriageChatbot } from '@/components/site/triage-chatbot';
 import { WhatsAppFab } from '@/components/site/whatsapp-fab';
 import { CallFab } from '@/components/site/call-fab';
 import { BookCallDialog } from '@/components/site/book-call-dialog';
-import { pageMetadata } from '@/lib/seo';
+import { pageMetadata, getVerification } from '@/lib/seo';
 import { CursorGlow } from '@/components/site/cursor-glow';
 import { Analytics } from '@/components/site/analytics';
 import { COMPANY } from '@/lib/data';
@@ -106,9 +106,12 @@ const siteSchema = {
 
 export default async function RootLayout({ children }) {
   const services = await listContent('services');
+  const verify = await getVerification();
   return (
     <html lang="en" suppressHydrationWarning className={`${spaceGrotesk.variable} ${inter.variable}`}>
       <head>
+        {verify.google ? <meta name="google-site-verification" content={verify.google} /> : null}
+        {verify.bing ? <meta name="msvalidate.01" content={verify.bing} /> : null}
         <script dangerouslySetInnerHTML={{__html:'window.addEventListener("error",function(e){if(e.error instanceof DOMException&&e.error.name==="DataCloneError"&&e.message&&e.message.includes("PerformanceServerTiming")){e.stopImmediatePropagation();e.preventDefault()}},true);'}} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(siteSchema) }} />
       </head>

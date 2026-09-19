@@ -626,7 +626,46 @@ function SeoManager({ adminKey }) {
         <Button type="submit" data-testid="seo-save" disabled={saving} className="mt-5 rounded-full glow-brand">
           {saving ? <RefreshCw className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />} Save SEO
         </Button>
+
+        <SearchConsoleVerify adminKey={adminKey} />
       </form>
+    </div>
+  );
+}
+
+function SearchConsoleVerify({ adminKey }) {
+  const [v, setV] = useState({ google: '', bing: '' });
+  const [saving, setSaving] = useState(false);
+  useEffect(() => {
+    fetch('/api/seo/verification').then((r) => r.json()).then((d) => d && setV({ google: d.google || '', bing: d.bing || '' })).catch(() => {});
+  }, []);
+  async function save() {
+    setSaving(true);
+    try {
+      const res = await fetch('/api/seo/verification', { method: 'PUT', headers: { 'Content-Type': 'application/json', 'x-admin-key': adminKey }, body: JSON.stringify(v) });
+      if (!res.ok) throw new Error('failed');
+      toast.success('Verification saved — added to every page. Now click Verify in Search Console.');
+    } catch { toast.error('Could not save verification'); }
+    finally { setSaving(false); }
+  }
+  return (
+    <div className="mt-8 rounded-xl border border-border bg-background/40 p-4">
+      <p className="flex items-center gap-2 text-sm font-semibold"><Search className="h-4 w-4 text-primary" /> Search engine verification</p>
+      <p className="mt-1 text-xs text-muted-foreground">Paste the code so Google/Bing can verify site ownership. In Search Console pick the <b>HTML tag</b> method and paste only the <code>content</code> value here.</p>
+      <div className="mt-3 space-y-3">
+        <div>
+          <Label htmlFor="v-google">Google Search Console code</Label>
+          <Input id="v-google" data-testid="seo-verify-google" value={v.google} onChange={(e) => setV((s) => ({ ...s, google: e.target.value }))} className="mt-1.5" placeholder="e.g. Abc123... (content value of google-site-verification)" />
+          <a href="https://search.google.com/search-console" target="_blank" rel="noopener noreferrer" className="mt-1.5 inline-flex items-center gap-1 text-xs text-primary hover:underline"><ExternalLink className="h-3 w-3" /> Open Google Search Console</a>
+        </div>
+        <div>
+          <Label htmlFor="v-bing">Bing Webmaster code (optional)</Label>
+          <Input id="v-bing" data-testid="seo-verify-bing" value={v.bing} onChange={(e) => setV((s) => ({ ...s, bing: e.target.value }))} className="mt-1.5" placeholder="content value of msvalidate.01" />
+        </div>
+      </div>
+      <Button type="button" onClick={save} data-testid="seo-verify-save" disabled={saving} className="mt-4 rounded-full">
+        {saving ? <RefreshCw className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />} Save verification
+      </Button>
     </div>
   );
 }

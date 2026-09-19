@@ -23,6 +23,16 @@ export async function getSeoOverride(path) {
   }
 }
 
+export async function getVerification() {
+  try {
+    const db = await getDb();
+    const v = await db.collection('settings').findOne({ _id: 'seo_verify' });
+    return { google: v?.google || '', bing: v?.bing || '' };
+  } catch (e) {
+    return { google: '', bing: '' };
+  }
+}
+
 export async function pageMetadata(path, base) {
   const o = await getSeoOverride(path);
   if (!o) return base;
