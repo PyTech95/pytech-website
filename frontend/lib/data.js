@@ -3,7 +3,7 @@
 
 export const COMPANY = {
   name: 'PyTech Digital',
-  legalName: 'PyTech IT Digital Private Limited',
+  legalName: 'PyTech Digital Private Limited',
   tagline: 'Build. Brand. Market. Automate.',
   description:
     'PyTech Digital is a full-stack IT, digital solutions and growth firm headquartered in Gurugram, serving Delhi NCR and global markets. We build software, craft brands, drive AI-first marketing and automate revenue workflows.',

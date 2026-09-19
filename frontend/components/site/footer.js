@@ -9,10 +9,10 @@ export function Footer({ services = [] }) {
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-6">
           <div className="lg:col-span-2">
             <div className="flex items-center gap-3">
-              <Link href="/" data-testid="footer-logo-link" aria-label="PyTech IT Digital home" className="flex items-center gap-3">
-                <img src="/pt-logo.png" alt="PyTech IT Digital" data-testid="footer-logo-image" className="h-16 w-16 object-contain" />
+              <Link href="/" data-testid="footer-logo-link" aria-label="PyTech Digital home" className="flex items-center gap-3">
+                <img src="/pt-logo.png" alt="PyTech Digital" data-testid="footer-logo-image" className="h-16 w-16 object-contain" />
                 <span className="leading-tight">
-                  <span className="block font-display text-lg font-bold tracking-tight text-foreground">PyTech IT Digital</span>
+                  <span className="block font-display text-lg font-bold tracking-tight text-foreground">PyTech Digital</span>
                   <span className="block text-xs font-medium text-muted-foreground">Private Limited</span>
                 </span>
               </Link>

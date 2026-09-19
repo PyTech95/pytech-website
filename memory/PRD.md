@@ -100,3 +100,6 @@ User ask: homepage must instantly say what the company does; 6 offerings admin-m
 
 ## Update — Blog byline (2026-09-19)
 - Blog article pages: removed visible "PyTech Digital" author byline (per user request); now shows only the publish date (if present). SEO JSON-LD schema still keeps Organization author (invisible, good for SEO).
+
+## Fix — legal name correction (2026-09-19)
+- User corrected: legal name is **PyTech Digital Private Limited** (no "IT"). Footer logo text + COMPANY.legalName reverted accordingly.
