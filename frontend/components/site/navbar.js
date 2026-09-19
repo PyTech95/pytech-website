@@ -14,7 +14,7 @@ import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '@/co
 function Logo() {
   return (
     <Link href="/" data-testid="navbar-logo-link" aria-label="PyTech Digital home" className="flex shrink-0 items-center">
-      <img src="/pt-logo.png" data-testid="navbar-logo-image" alt="PyTech Digital" className="h-14 w-14 object-contain sm:h-16 sm:w-16" />
+      <img src="/pt-logo.png" data-testid="navbar-logo-image" alt="PyTech Digital" className="h-16 w-16 object-contain sm:h-20 sm:w-20" />
     </Link>
   );
 }
@@ -28,9 +28,9 @@ export function Navbar() {
         <Logo />
 
         {/* Desktop nav */}
-        <nav className="hidden items-center gap-1 2xl:flex">
+        <nav className="hidden items-center gap-0.5 xl:flex">
           <div className="group relative">
-            <button data-testid="nav-services-menu" className="flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+            <button data-testid="nav-services-menu" className="flex items-center gap-1 rounded-md px-2 py-2 text-[13px] font-medium text-muted-foreground transition-colors hover:text-foreground">
               Services <ChevronDown className="h-4 w-4 transition-transform group-hover:rotate-180" />
             </button>
             <div className="invisible absolute left-1/2 top-full w-[720px] -translate-x-1/2 pt-3 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100">
@@ -56,15 +56,15 @@ export function Navbar() {
               </div>
             </div>
           </div>
-          <Link href="/case-studies" className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">Case Studies</Link>
-          <Link href="/locations" className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">Locations</Link>
-          <Link href="/ai-automation" className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">AI Automation</Link>
-          <Link href="/work" className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">Work</Link>
-          <Link href="/pricing" data-testid="nav-pricing" className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">Pricing</Link>
-          <Link href="/careers" className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">Careers</Link>
-          <Link href="/blog" data-testid="nav-blog" className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">Blog / News</Link>
-          <Link href="/support" className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">Support</Link>
-          <Link href="/#contact" className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">Contact</Link>
+          <Link href="/case-studies" className="rounded-md px-2 py-2 text-[13px] font-medium text-muted-foreground transition-colors hover:text-foreground">Case Studies</Link>
+          <Link href="/locations" className="rounded-md px-2 py-2 text-[13px] font-medium text-muted-foreground transition-colors hover:text-foreground">Locations</Link>
+          <Link href="/ai-automation" className="rounded-md px-2 py-2 text-[13px] font-medium text-muted-foreground transition-colors hover:text-foreground">AI Automation</Link>
+          <Link href="/work" className="rounded-md px-2 py-2 text-[13px] font-medium text-muted-foreground transition-colors hover:text-foreground">Work</Link>
+          <Link href="/pricing" data-testid="nav-pricing" className="rounded-md px-2 py-2 text-[13px] font-medium text-muted-foreground transition-colors hover:text-foreground">Pricing</Link>
+          <Link href="/careers" className="rounded-md px-2 py-2 text-[13px] font-medium text-muted-foreground transition-colors hover:text-foreground">Careers</Link>
+          <Link href="/blog" data-testid="nav-blog" className="rounded-md px-2 py-2 text-[13px] font-medium text-muted-foreground transition-colors hover:text-foreground">Blog / News</Link>
+          <Link href="/support" className="rounded-md px-2 py-2 text-[13px] font-medium text-muted-foreground transition-colors hover:text-foreground">Support</Link>
+          <Link href="/#contact" className="rounded-md px-2 py-2 text-[13px] font-medium text-muted-foreground transition-colors hover:text-foreground">Contact</Link>
         </nav>
 
         <div className="flex items-center gap-1.5">
@@ -78,7 +78,7 @@ export function Navbar() {
           {/* Mobile */}
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" data-testid="mobile-menu-open" className="2xl:hidden" aria-label="Menu">
+              <Button variant="ghost" size="icon" data-testid="mobile-menu-open" className="xl:hidden" aria-label="Menu">
                 <Menu className="h-5 w-5" />
               </Button>
             </SheetTrigger>

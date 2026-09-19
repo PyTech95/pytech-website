@@ -87,3 +87,8 @@ User ask: homepage must instantly say what the company does; 6 offerings admin-m
 - P0: User enters Gmail App Password → toggle both switches ON → re-test emailStatus flips to 'sent'.
 - P1: Replace placeholder prices (ERP/AI/Marketing/Branding) in Admin → Offerings & Pricing.
 - P2: Native Next.js production build for real deploy; real CORS_ORIGINS; COMPANY.url → production domain.
+
+## Update — Email LIVE + nav/logo fixes (2026-09-19)
+- **Gmail App Password provided by user** → saved via PUT /api/settings/email; both toggles ON. Live lead test → emailStatus="sent" (real email to rajeev.pytech@gmail.com). EMAIL DELIVERY IS LIVE for enquiries + job applications.
+- **Desktop full menu:** nav breakpoint 2xl→xl with tighter spacing (px-2, text-[13px]); hamburger only below 1280px. Verified at 1920/1280 (full nav, no overflow) and 390 (hamburger only).
+- **Logo:** public/pt-logo.png re-encoded to true transparent background (white monogram, luminance-keyed via PIL); navbar logo size h-14/sm:h-16 → h-16/sm:h-20.
