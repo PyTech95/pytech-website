@@ -1,0 +1,29 @@
+{
+  "summary": "Iteration 7: Verified the primary bug fix — desktop Services mega-menu is now SOLID/OPAQUE (bg rgb(10,15,26), alpha=1.0) and no longer transparent. All 4 pillar groups (BUILD, BRAND, MARKET, AUTOMATE) render with service links + taglines. Bottom 'Explore all services' row (data-testid nav-all-services) links to /services and is visible. Panel stays within viewport at 1920 (left=495, right=1255) and 1280 widths. Responsive nav confirmed: full horizontal menu at 1280/1920, hamburger (data-testid mobile-menu-open) hidden on desktop; at 390 hamburger visible, opens drawer with All Services link. Navbar logo (data-testid navbar-logo-image) has transparent bg (rgba(0,0,0,0)), 80x80, /pt-logo.png. Backend regression: 10/10 pytest cases pass — home/services/pricing/careers/admin all 200, unknown route 404, email settings show enabled=true & hasPassword=true & enabledEnquiries=true, POST /api/leads returns 200 and lead's emailStatus flips to 'sent' when polled from GET /api/leads, POST /api/careers/apply (multipart) returns 200.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_pytech_iter7.py",
+    "/app/test_reports/pytest/iter7.xml"
+  ],
+  "action_items": [
+    "Old test file /app/backend/tests/test_pytech_iter6.py has 3 stale assertions (asserts enabled/hasPassword are False) — should be deleted or updated since Gmail is now LIVE. iter7 test supersedes it."
+  ],
+  "critical_code_review_comments": [
+    "navbar.js mega-menu correctly uses bg-[hsl(var(--popover))] which resolves to solid rgb(10,15,26) — fully opaque, addresses the transparency bug.",
+    "Hover-based menu without keyboard/focus trigger — for a11y, consider also opening on focus for keyboard users (Radix Popover/DropdownMenu would give this for free).",
+    "Real Gmail is being sent on every /api/leads POST — during backend tests we generated 1 real lead + 1 real application (real emails delivered to rajeev.pytech@gmail.com). User acknowledged this is acceptable."
+  ],
+  "updated_files": ["/app/backend/tests/test_pytech_iter7.py"],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "test_credentials": "x-admin-key / admin password: PyTech@Admin2026!",
+  "seed_data_creation": "1 lead (TEST_Lead_iter7_<timestamp>) with emailStatus='sent' and 1 application (TEST_Applicant_iter7 / applicant_iter7@example.com) written to MongoDB via API; real emails delivered by live Gmail SMTP.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Base URL https://pytech-hardened.preview.emergentagent.com. All 10 iter7 pytest cases green. Mega-menu bug is FIXED. Gmail SMTP is LIVE (enabled=true, hasPassword=true) — POSTs to /api/leads and /api/careers/apply send real mail to rajeev.pytech@gmail.com; use TEST_ prefix for names. Occasional cold-start 502 on first hit — iter7 tests already retry 3x. /api/careers/apply requires multipart/form-data only. Old iter6 tests are stale (asserted Gmail disabled) — safe to delete.",
+  "rca of the issue": "Original transparency: mega-menu panel used a semi-transparent background so hero WebGL globe + text bled through. Fix in navbar.js changed the panel container to bg-[hsl(var(--popover))] which is solid rgb(10,15,26) (alpha=1.0) with ring/shadow — verified via getComputedStyle in a real desktop browser session."
+}
