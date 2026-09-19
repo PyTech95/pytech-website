@@ -92,3 +92,8 @@ User ask: homepage must instantly say what the company does; 6 offerings admin-m
 - **Gmail App Password provided by user** → saved via PUT /api/settings/email; both toggles ON. Live lead test → emailStatus="sent" (real email to rajeev.pytech@gmail.com). EMAIL DELIVERY IS LIVE for enquiries + job applications.
 - **Desktop full menu:** nav breakpoint 2xl→xl with tighter spacing (px-2, text-[13px]); hamburger only below 1280px. Verified at 1920/1280 (full nav, no overflow) and 390 (hamburger only).
 - **Logo:** public/pt-logo.png re-encoded to true transparent background (white monogram, luminance-keyed via PIL); navbar logo size h-14/sm:h-16 → h-16/sm:h-20.
+
+## Update — Mega-menu solid + footer legal name (2026-09-19)
+- **Services mega-menu:** was transparent (hero bled through). Now solid opaque panel `bg-[hsl(var(--popover))]`, left-aligned (no clipping), per-service icon+tagline rows, bottom "Explore all services" CTA. Testing agent iteration_7: 100% pass.
+- **Footer logo:** now shows "PyTech IT Digital" + "Private Limited" next to logo; COMPANY.legalName → 'PyTech IT Digital Private Limited' (copyright line updated too).
+- Still pending user input: actual prices for ERP / AI & Automation / Digital Marketing / Branding & Design (placeholders remain until user sends real numbers).

@@ -8,8 +8,14 @@ export function Footer({ services = [] }) {
       <div className="container mx-auto px-6 py-14">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-6">
           <div className="lg:col-span-2">
-            <div className="flex items-center gap-2.5">
-              <Link href="/" data-testid="footer-logo-link" aria-label="PyTech Digital home"><img src="/pt-logo.png" alt="PyTech Digital" data-testid="footer-logo-image" className="h-20 w-20 object-contain" /></Link>
+            <div className="flex items-center gap-3">
+              <Link href="/" data-testid="footer-logo-link" aria-label="PyTech IT Digital home" className="flex items-center gap-3">
+                <img src="/pt-logo.png" alt="PyTech IT Digital" data-testid="footer-logo-image" className="h-16 w-16 object-contain" />
+                <span className="leading-tight">
+                  <span className="block font-display text-lg font-bold tracking-tight text-foreground">PyTech IT Digital</span>
+                  <span className="block text-xs font-medium text-muted-foreground">Private Limited</span>
+                </span>
+              </Link>
             </div>
             <p className="mt-4 max-w-xs text-sm text-muted-foreground">{COMPANY.description}</p>
             <div className="mt-5 space-y-2 text-sm text-muted-foreground">
