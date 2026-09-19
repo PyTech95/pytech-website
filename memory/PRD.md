@@ -97,3 +97,6 @@ User ask: homepage must instantly say what the company does; 6 offerings admin-m
 - **Services mega-menu:** was transparent (hero bled through). Now solid opaque panel `bg-[hsl(var(--popover))]`, left-aligned (no clipping), per-service icon+tagline rows, bottom "Explore all services" CTA. Testing agent iteration_7: 100% pass.
 - **Footer logo:** now shows "PyTech IT Digital" + "Private Limited" next to logo; COMPANY.legalName → 'PyTech IT Digital Private Limited' (copyright line updated too).
 - Still pending user input: actual prices for ERP / AI & Automation / Digital Marketing / Branding & Design (placeholders remain until user sends real numbers).
+
+## Update — Blog byline (2026-09-19)
+- Blog article pages: removed visible "PyTech Digital" author byline (per user request); now shows only the publish date (if present). SEO JSON-LD schema still keeps Organization author (invisible, good for SEO).

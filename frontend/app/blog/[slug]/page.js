@@ -22,7 +22,7 @@ export default async function ArticlePage({ params }) {
     <p data-testid="article-type" className="mt-8 text-xs font-semibold uppercase text-primary">{post.kind === 'news' ? 'News' : 'Blog'} · {post.pillar}</p>
     <h1 data-testid="article-title" className="mt-4 font-display text-4xl font-bold leading-tight sm:text-5xl">{post.title}</h1>
     <p className="mt-6 text-base text-muted-foreground md:text-lg">{post.excerpt}</p>
-    <p data-testid="article-byline" className="mt-5 text-xs text-muted-foreground">{post.author || COMPANY.name}{post.publishedAt ? ` · ${new Date(post.publishedAt).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })}` : ''}</p>
+    {post.publishedAt ? <p data-testid="article-byline" className="mt-5 text-xs text-muted-foreground">{new Date(post.publishedAt).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })}</p> : null}
     {post.image && <div className="mt-8 aspect-[16/10] overflow-hidden rounded-lg bg-card"><img data-testid="article-cover" src={post.image} alt={post.imageAlt || post.title} className="h-full w-full object-contain" /></div>}
     <div data-testid="article-body" className="cms-prose mt-12 text-sm md:text-base" dangerouslySetInnerHTML={{ __html: cleanHtml(post.body) }} />
     <div className="mt-14 border-y border-border py-8"><p className="font-display text-lg font-semibold">Have a project in mind?</p><Link href="/#contact" data-testid="article-contact" className="mt-3 inline-flex items-center gap-2 text-sm text-primary">Talk to our team <ArrowRight className="h-4 w-4" /></Link></div>
