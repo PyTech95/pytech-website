@@ -21,7 +21,7 @@ export const DEFAULT_RECIPIENT = 'rajeev.pytech@gmail.com';
 export async function sendLeadEmail(cfg, lead, adminUrl) {
   const transporter = buildTransport(cfg);
   const fromName = cfg.fromName || 'PyTech Website';
-  const to = cfg.recipient || cfg.user || DEFAULT_RECIPIENT;
+  const to = cfg.enquiryRecipient || cfg.recipient || cfg.user || DEFAULT_RECIPIENT;
   const rows = [
     ['Name', lead.name],
     ['Company', lead.company],

@@ -632,7 +632,7 @@ function SeoManager({ adminKey }) {
 }
 
 function EmailSettings({ adminKey }) {
-  const [cfg, setCfg] = useState({ host: 'smtp.gmail.com', port: 465, user: '', recipient: '', fromName: 'PyTech Careers', enabled: false, hasPassword: false });
+  const [cfg, setCfg] = useState({ host: 'smtp.gmail.com', port: 465, user: '', recipient: '', enquiryRecipient: '', fromName: 'PyTech Careers', enabled: false, enabledEnquiries: false, hasPassword: false });
   const [pass, setPass] = useState('');
   const [saving, setSaving] = useState(false);
   const set = (k) => (e) => setCfg((c) => ({ ...c, [k]: e.target.value }));
@@ -664,8 +664,8 @@ function EmailSettings({ adminKey }) {
       <div className="flex items-start gap-3">
         <span className="grid h-11 w-11 flex-none place-items-center rounded-xl bg-primary/15 text-primary"><Mail className="h-5 w-5" /></span>
         <div>
-          <p className="font-display text-lg font-semibold">Job application email (Gmail SMTP)</p>
-          <p className="mt-1 text-sm text-muted-foreground">Applications are emailed here with the resume attached. Use a Gmail <b>App Password</b> (needs 2-Step Verification on).</p>
+          <p className="font-display text-lg font-semibold">Email notifications (Gmail SMTP)</p>
+          <p className="mt-1 text-sm text-muted-foreground">New enquiries (contact form) and job applications are emailed here. Use a Gmail <b>App Password</b> (needs 2-Step Verification on).</p>
         </div>
       </div>
 
@@ -680,18 +680,31 @@ function EmailSettings({ adminKey }) {
           <Input id="s-pass" data-testid="email-pass" type="password" value={pass} onChange={(e) => setPass(e.target.value)} className="mt-1.5" placeholder={cfg.hasPassword ? '•••••••• (saved — leave blank to keep)' : 'abcd efgh ijkl mnop'} />
           <a href="https://myaccount.google.com/apppasswords" target="_blank" rel="noopener noreferrer" className="mt-1.5 inline-flex items-center gap-1 text-xs text-primary hover:underline"><ExternalLink className="h-3 w-3" /> Get an App Password</a>
         </div>
-        <div><Label htmlFor="s-recipient">Recipient (where applications land)</Label><Input id="s-recipient" data-testid="email-recipient" value={cfg.recipient} onChange={set('recipient')} className="mt-1.5" placeholder="rajeev.pytech@gmail.com" /></div>
         <div><Label htmlFor="s-from">From name</Label><Input id="s-from" value={cfg.fromName} onChange={set('fromName')} className="mt-1.5" /></div>
-        <label className="flex cursor-pointer items-center justify-between rounded-lg border border-border bg-background/50 px-3 py-2.5">
-          <span className="flex items-center gap-2 text-sm"><Send className="h-4 w-4 text-primary" /> Send application emails</span>
-          <Switch checked={cfg.enabled} onCheckedChange={(v) => setCfg((c) => ({ ...c, enabled: v }))} data-testid="email-enabled" />
-        </label>
+
+        <div className="rounded-xl border border-border bg-background/40 p-3">
+          <p className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground"><Send className="h-3.5 w-3.5 text-primary" /> Contact form enquiries</p>
+          <label className="flex cursor-pointer items-center justify-between py-1">
+            <span className="text-sm">Email me new enquiries</span>
+            <Switch checked={cfg.enabledEnquiries} onCheckedChange={(v) => setCfg((c) => ({ ...c, enabledEnquiries: v }))} data-testid="email-enabled-enquiries" />
+          </label>
+          <div className="mt-2"><Label htmlFor="s-enquiry-recipient">Enquiry recipient inbox</Label><Input id="s-enquiry-recipient" data-testid="email-enquiry-recipient" value={cfg.enquiryRecipient} onChange={set('enquiryRecipient')} className="mt-1.5" placeholder="rajeev.pytech@gmail.com (default)" /></div>
+        </div>
+
+        <div className="rounded-xl border border-border bg-background/40 p-3">
+          <p className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground"><Briefcase className="h-3.5 w-3.5 text-primary" /> Job applications</p>
+          <label className="flex cursor-pointer items-center justify-between py-1">
+            <span className="text-sm">Email me job applications (resume attached)</span>
+            <Switch checked={cfg.enabled} onCheckedChange={(v) => setCfg((c) => ({ ...c, enabled: v }))} data-testid="email-enabled" />
+          </label>
+          <div className="mt-2"><Label htmlFor="s-recipient">Application recipient inbox</Label><Input id="s-recipient" data-testid="email-recipient" value={cfg.recipient} onChange={set('recipient')} className="mt-1.5" placeholder="rajeev.pytech@gmail.com" /></div>
+        </div>
       </div>
 
       <Button type="submit" data-testid="email-save" disabled={saving} className="mt-5 w-full rounded-full glow-brand">
         {saving ? <RefreshCw className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />} Save email settings
       </Button>
-      <p className="mt-3 text-center text-xs text-muted-foreground">Until enabled, applications &amp; resumes are still saved here in the Applications tab.</p>
+      <p className="mt-3 text-center text-xs text-muted-foreground">Until enabled, enquiries &amp; applications are still saved here in the Leads and Applications tabs.</p>
     </form>
   );
 }

@@ -1,0 +1,34 @@
+{
+  "summary": "Iteration 6: Verified transparent glass header (bigger), homepage hero LEFT-column text visibility, lead + application submission with Gmail disabled, and general page regression. All 10 backend/pytest checks pass. Homepage hero text (H1, subtitle, both CTA buttons, and 4 stats 120+/4.2x/0.8s/11+) renders VISIBLE with opacity:1 in a real browser — the framer-motion invisible bug is NOT reproducible. Header height = 96px desktop / 80px mobile with rgba(12,17,29,0.28) + backdrop blur(14px) saturate(1.6) — clearly transparent glass. No React hydration mismatch warnings observed in console (only WebGL performance info + font preload warnings, both cosmetic).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Homepage (mobile 390px)", "issues": ["The floating WhatsApp/phone (bottom-right) and Novi chat (bottom-left) widgets overlap the hero WebGL globe area — minor cosmetic; no interaction blocked"]}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_pytech_iter6.py",
+    "/app/test_reports/pytest/iter6.xml"
+  ],
+  "action_items": [
+    "None blocking. When user provides Gmail App Password, PUT /api/settings/email with enabled=true and re-run lead/application flows to verify emailStatus flips to 'sent'.",
+    "Consider removing/gating preloaded woff2 fonts that trigger 'preloaded but not used' console warnings.",
+    "POST /api/leads response returns the lead as inserted BEFORE the emailStatus field is added by the async update — response body has no emailStatus. Non-blocking (GET /api/leads shows emailStatus='not_sent' correctly)."
+  ],
+  "critical_code_review_comments": [
+    "lib/mailer.js and route.js correctly guard on settings.enabled — no crash when Gmail is disabled.",
+    "Framer-motion motion.h1/motion.p/motion.div in app/page.js use initial opacity:0 → animate opacity:1 with short duration; renders visible in real browser. No SSR/hydration issue observed.",
+    "components/site/navbar.js has proper h-20 sm:h-24 sizing and inline hsl(var(--card)/0.28) glass — matches the request.",
+    "POST /api/careers/apply requires multipart/form-data (not JSON). Fine, but the JSON error message is a generic 500 — consider returning 415 with a clearer message."
+  ],
+  "updated_files": ["/app/backend/tests/test_pytech_iter6.py"],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "test_credentials": "x-admin-key: PyTech@Admin2026!",
+  "seed_data_creation": "Two test docs created via API: lead (TEST_Lead_iter6) and application (TEST_Applicant / applicant_iter6@example.com).",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Hero visibility bug is RESOLVED / not reproducible. Header transparency + size verified. Gmail SMTP is intentionally disabled (enabled=false, hasPassword=false); do NOT assert real email delivery until user provides App Password. /api/careers/apply is multipart/form-data only. Base URL: https://pytech-hardened.preview.emergentagent.com. Note occasional cold-start 502s from Next dev server on first hit — retry once.",
+  "rca of the issue": "Reported hero-invisible bug NOT REPRODUCED. Computed styles show opacity:1, visibility:visible, non-zero bounding rects, and the screenshot clearly shows the H1 headline, subtitle, both CTAs, and all 4 stats. Framer-motion animation completes normally in the real browser."
+}

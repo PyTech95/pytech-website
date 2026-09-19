@@ -71,3 +71,19 @@ User ask: homepage must instantly say what the company does; 6 offerings admin-m
 - P1: Replace placeholder prices for ERP / AI / Marketing / Branding with the real numbers (Admin → Offerings & Pricing).
 - P1: Activate careers email (Admin → Email tab, Gmail App Password).
 - P2: Self-host offering images instead of Unsplash URLs; split `route.js` per resource.
+
+## Update — Re-deployed to new pod + enquiry email settings (2026-09-19)
+- Bundle re-deployed from `PYTECH-WebsiteNew-main.zip` into a fresh fastapi_react_mongo pod: Next.js in /app/frontend (yarn, `next dev` on :3000 via `yarn start`), FastAPI reverse proxy in /app/backend on :8001 forwarding /api/* → :3000. Server secrets in /app/frontend/.env.local (MONGO_URL, DB_NAME=pytech_digital, ADMIN_PASSWORD, EMERGENT_LLM_KEY, CORS_ORIGINS). .env.local gitignored.
+- **User request 1:** header made MORE transparent (inline `hsl(var(--card)/0.28)` over `.glass`) and slightly bigger (h-20 → sm:h-24). Verified by testing agent (iteration_6).
+- **User request 2:** every form submission emails rajeev.pytech@gmail.com. Added `sendLeadEmail` (lib/mailer.js) + lead POST now emails best-effort; recipient defaults to rajeev.pytech@gmail.com (`DEFAULT_RECIPIENT`).
+- **User request 3:** Admin → Email tab now "Email notifications (Gmail SMTP)" with TWO independent settings: Contact-form enquiries (`enabledEnquiries` toggle + `enquiryRecipient`) and Job applications (`enabled` + `recipient`). API GET/PUT /api/settings/email extended accordingly. Lead emails gate on `enabledEnquiries`; application emails on `enabled`.
+- Settings seeded: user=recipient=enquiryRecipient=rajeev.pytech@gmail.com, enabledEnquiries=true, enabled=false, hasPassword=false.
+- Verified: iteration_6 test report 100% pass; hero-text-invisible concern was a headless-screenshot artifact (real browser renders fine; hydration warning is cosmetic, caused by Emergent overlay injecting `caret-color:transparent` pre-hydration). Admin UI login works via Enter key.
+
+## BLOCKER — needs user
+- **Gmail App Password** for rajeev.pytech@gmail.com must be entered in Admin → Email tab (or shared) before any email actually sends. Without it, enquiries/applications only save to DB (Admin → Leads / Applications tabs). Get one at https://myaccount.google.com/apppasswords (2-Step Verification required).
+
+## Backlog / next
+- P0: User enters Gmail App Password → toggle both switches ON → re-test emailStatus flips to 'sent'.
+- P1: Replace placeholder prices (ERP/AI/Marketing/Branding) in Admin → Offerings & Pricing.
+- P2: Native Next.js production build for real deploy; real CORS_ORIGINS; COMPANY.url → production domain.

@@ -100,7 +100,7 @@ async function handleRoute(request, { params }) {
       // Email notification (best-effort) using admin-configured Gmail settings
       try {
         const cfg = await db.collection('settings').findOne({ _id: 'email' })
-        if (cfg && cfg.enabled && cfg.user && cfg.pass) {
+        if (cfg && cfg.enabledEnquiries && cfg.user && cfg.pass) {
           const adminUrl = `${request.nextUrl.origin}/admin`
           await sendLeadEmail(cfg, lead, adminUrl)
           await db.collection('leads').updateOne({ id: lead.id }, { $set: { emailStatus: 'sent' } })
@@ -448,8 +448,10 @@ async function handleRoute(request, { params }) {
         port: cfg?.port || 465,
         user: cfg?.user || '',
         recipient: cfg?.recipient || DEFAULT_RECIPIENT,
+        enquiryRecipient: cfg?.enquiryRecipient || '',
         fromName: cfg?.fromName || 'PyTech Careers',
         enabled: !!cfg?.enabled,
+        enabledEnquiries: !!cfg?.enabledEnquiries,
         hasPassword: !!cfg?.pass,
       }))
     }
@@ -461,8 +463,10 @@ async function handleRoute(request, { params }) {
         port: Number(b.port) || 465,
         user: b.user || '',
         recipient: b.recipient || b.user || DEFAULT_RECIPIENT,
+        enquiryRecipient: b.enquiryRecipient || '',
         fromName: b.fromName || 'PyTech Careers',
         enabled: !!b.enabled,
+        enabledEnquiries: !!b.enabledEnquiries,
         updatedAt: new Date(),
       }
       if (typeof b.pass === 'string' && b.pass.length > 0) set.pass = b.pass.replace(/\s+/g, '')
