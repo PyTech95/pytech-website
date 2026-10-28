@@ -1,8 +1,18 @@
+'use client';
+
+import { useState } from 'react';
 import { ArrowUpRight, Clock, FolderGit2 } from 'lucide-react';
+
+function ProjectImage({ project: p, prefix }) {
+  const [failedSource, setFailedSource] = useState(null);
+  return <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden border-b border-border bg-secondary/30">
+    {p.image && failedSource !== p.image ? <img data-testid={`${prefix}-image-${p.id}`} src={p.image} alt={p.name} loading="lazy" onError={() => setFailedSource(p.image)} className="absolute inset-0 h-full w-full object-contain p-5 transition-transform duration-300 group-hover:scale-[1.02]" /> : <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 p-5 text-center"><FolderGit2 className="h-10 w-10 text-primary/60" /><span className="text-sm text-muted-foreground">{p.name}</span></div>}
+  </div>;
+}
 
 export const ProjectGrid = ({ projects, prefix = 'work' }) => <div className="grid min-w-0 gap-6 md:grid-cols-2 lg:grid-cols-3">
   {projects.map((p) => <article key={p.id} data-testid={`${prefix}-project-${p.id}`} className="group flex min-w-0 flex-col overflow-hidden rounded-lg border border-border bg-card/50 transition-colors hover:border-primary/50">
-    {p.image ? <div className="aspect-[16/10] bg-background"><img data-testid={`${prefix}-image-${p.id}`} src={p.image} alt={p.name} loading="lazy" className="h-full w-full object-contain" /></div> : <div className="flex aspect-[16/10] items-center justify-center bg-secondary/50"><FolderGit2 className="h-12 w-12 text-primary/60" /></div>}
+    <ProjectImage project={p} prefix={prefix} />
     <div className="flex flex-1 flex-col gap-3 p-5 [overflow-wrap:anywhere]">
       {p.category && <p className="text-xs font-medium text-primary">{p.category}</p>}
       <h3 data-testid={`${prefix}-name-${p.id}`} className="font-display text-lg font-semibold">{p.name}</h3>
