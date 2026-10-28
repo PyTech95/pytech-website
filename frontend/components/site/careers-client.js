@@ -23,12 +23,13 @@ const PERKS = [
 function ApplyForm({ job, onDone }) {
   const [file, setFile] = useState(null);
   const [submitting, setSubmitting] = useState(false);
-  const [values, setValues] = useState({ name: '', email: '', phone: '', experience: '', company: '', portfolio: '', coverLetter: '' });
+  const [values, setValues] = useState({ name: '', email: '', phone: '', experience: '', company: '', currentLocation: '', portfolio: '', coverLetter: '' });
   const set = (k) => (e) => setValues((v) => ({ ...v, [k]: e.target.value }));
 
   async function onSubmit(e) {
     e.preventDefault();
     if (!values.name.trim() || !values.email.trim()) { toast.error('Please add your name and email.'); return; }
+    if (!values.currentLocation.trim()) { toast.error('Please enter your current location.'); return; }
     if (file && file.size > 10 * 1024 * 1024) { toast.error('Resume must be under 10MB.'); return; }
     setSubmitting(true);
     try {
@@ -54,6 +55,7 @@ function ApplyForm({ job, onDone }) {
         <div><Label htmlFor="af-email">Email *</Label><Input id="af-email" type="email" data-testid="apply-email" value={values.email} onChange={set('email')} className="mt-1.5" placeholder="you@email.com" /></div>
         <div><Label htmlFor="af-phone">Phone</Label><Input id="af-phone" data-testid="apply-phone" value={values.phone} onChange={set('phone')} className="mt-1.5" placeholder="+91 …" /></div>
         <div><Label htmlFor="af-exp">Experience</Label><Input id="af-exp" data-testid="apply-experience" value={values.experience} onChange={set('experience')} className="mt-1.5" placeholder="e.g. 3 years" /></div>
+        <div className="sm:col-span-2"><Label htmlFor="af-location">Current Location *</Label><Input id="af-location" data-testid="apply-location" required maxLength={200} autoComplete="address-level2" value={values.currentLocation} onChange={set('currentLocation')} className="mt-1.5" placeholder="City, State — e.g. Gurugram, Haryana" /></div>
         <div><Label htmlFor="af-company">Current company</Label><Input id="af-company" value={values.company} onChange={set('company')} className="mt-1.5" placeholder="Optional" /></div>
         <div><Label htmlFor="af-portfolio">LinkedIn / Portfolio</Label><Input id="af-portfolio" value={values.portfolio} onChange={set('portfolio')} className="mt-1.5" placeholder="https://…" /></div>
       </div>

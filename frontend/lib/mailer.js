@@ -73,6 +73,7 @@ export async function sendApplicationEmail(cfg, app, attachment, adminUrl) {
     ['Phone', app.phone],
     ['Experience', app.experience],
     ['Current company', app.company],
+    ['Current location', app.currentLocation],
     ['LinkedIn / Portfolio', app.portfolio],
   ].filter(([, v]) => v);
 
