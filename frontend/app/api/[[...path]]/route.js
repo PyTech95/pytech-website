@@ -390,6 +390,8 @@ async function handleRoute(request, { params }) {
         phone: get('phone'),
         experience: get('experience'),
         company: get('company'),
+        currentLocation: get('currentLocation'),
+        starred: false,
         portfolio: get('portfolio'),
         coverLetter: get('coverLetter'),
         createdAt: new Date(),
@@ -398,6 +400,10 @@ async function handleRoute(request, { params }) {
       }
       if (!application.name || !application.email) {
         return handleCORS(NextResponse.json({ error: 'name and email are required' }, { status: 400 }))
+      }
+
+      if (!application.currentLocation || application.currentLocation.length > 200) {
+        return handleCORS(NextResponse.json({ error: 'Current location is required (maximum 200 characters)' }, { status: 400 }))
       }
 
       // Upload resume to object storage (if provided)
@@ -445,8 +451,21 @@ async function handleRoute(request, { params }) {
 
     if (route === '/careers/applications' && method === 'GET') {
       if (!isAdmin()) return handleCORS(NextResponse.json({ error: 'Unauthorized' }, { status: 401 }))
-      const apps = await db.collection('applications').find({}).sort({ createdAt: -1 }).limit(500).toArray()
+      const offset = Number(request.nextUrl.searchParams.get('offset') || 0)
+      if (!Number.isSafeInteger(offset) || offset < 0) return handleCORS(NextResponse.json({ error: 'Invalid offset' }, { status: 400 }))
+      const apps = await db.collection('applications').find({}).sort({ createdAt: -1, id: -1 }).skip(offset).limit(500).toArray()
       return handleCORS(NextResponse.json(apps.map(({ _id, emailError, ...rest }) => rest)))
+    }
+
+    if (route.startsWith('/careers/applications/') && method === 'PATCH') {
+      if (!isAdmin()) return handleCORS(NextResponse.json({ error: 'Unauthorized' }, { status: 401 }))
+      const id = route.slice('/careers/applications/'.length)
+      let body
+      try { body = await request.json() } catch { return handleCORS(NextResponse.json({ error: 'Invalid JSON' }, { status: 400 })) }
+      if (typeof body?.starred !== 'boolean') return handleCORS(NextResponse.json({ error: 'starred must be boolean' }, { status: 400 }))
+      const result = await db.collection('applications').updateOne({ id }, { $set: { starred: body.starred } })
+      if (!result.matchedCount) return handleCORS(NextResponse.json({ error: 'Application not found' }, { status: 404 }))
+      return handleCORS(NextResponse.json({ id, starred: body.starred }))
     }
 
     // ---- Email settings (admin) ----
