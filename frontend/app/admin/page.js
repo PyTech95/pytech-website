@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import {
-  Search, Users, MessagesSquare, RefreshCw, Mail, Phone, Building2, Clock, Bot, User, Lock, LogOut, Flame,
+  MapPin, Search, Users, MessagesSquare, RefreshCw, Mail, Phone, Building2, Clock, Bot, User, Lock, LogOut, Flame,
   FolderGit2, FileText, Settings2, Download, Plus, Trash2, Star, Save, Send, ExternalLink, Briefcase, Tags,
 } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
@@ -46,6 +46,10 @@ export default function AdminPage() {
   const [sessions, setSessions] = useState([]);
   const [projects, setProjects] = useState([]);
   const [applications, setApplications] = useState([]);
+  const [starredOnly, setStarredOnly] = useState(false);
+  const [savingStars, setSavingStars] = useState([]);
+  const visibleApplications = applications.filter((a) => !starredOnly || a.starred === true);
+  const starredCount = applications.filter((a) => a.starred === true).length;
   const [offerings, setOfferings] = useState([]);
   const [q, setQ] = useState('');
   const [tierFilter, setTierFilter] = useState('all');
@@ -57,6 +61,20 @@ export default function AdminPage() {
   }, []);
 
   useEffect(() => { if (authed && key) load(key); }, [authed, key]);
+
+  async function toggleApplicationStar(application) {
+    setSavingStars((ids) => [...ids, application.id]);
+    try {
+      const res = await fetch(`/api/careers/applications/${encodeURIComponent(application.id)}`, {
+        method: 'PATCH', headers: { 'Content-Type': 'application/json', 'x-admin-key': key },
+        body: JSON.stringify({ starred: !application.starred }),
+      });
+      if (!res.ok) throw new Error('Could not save shortlist');
+      const updated = await res.json();
+      setApplications((rows) => rows.map((a) => a.id === updated.id ? { ...a, starred: updated.starred } : a));
+    } catch { toast.error('Could not save shortlist. Please try again.'); }
+    finally { setSavingStars((ids) => ids.filter((id) => id !== application.id)); }
+  }
 
   async function login(e) {
     e.preventDefault();
@@ -89,14 +107,25 @@ export default function AdminPage() {
       const l = await lr.json();
       const s = await sr.json();
       const p = await pr.json();
+      if (!ar.ok) throw new Error('Could not load applications');
       const a = await ar.json();
+      if (Array.isArray(a)) {
+        let pageLength = a.length;
+        while (pageLength === 500) {
+          const page = await fetch(`/api/careers/applications?offset=${a.length}`, { headers: h });
+          if (!page.ok) throw new Error('Could not load older applications');
+          const rows = await page.json();
+          pageLength = rows.length;
+          a.push(...rows);
+        }
+      }
       const o = await or_.json();
       setLeads(Array.isArray(l) ? l : []);
       setSessions(s?.sessions || []);
       setProjects(Array.isArray(p?.projects) ? p.projects : []);
       setApplications(Array.isArray(a) ? a : []);
       setOfferings(Array.isArray(o?.offerings) ? o.offerings : []);
-    } catch (e) { /* noop */ }
+    } catch (e) { toast.error('Could not load admin data. Please refresh and try again.'); }
     setLoading(false);
   }
 
@@ -268,22 +297,29 @@ export default function AdminPage() {
 
         {/* APPLICATIONS */}
         <TabsContent value="applications" className="mt-6">
+          <div className="mb-5 flex flex-wrap gap-2">
+            <Button variant={starredOnly ? 'outline' : 'default'} aria-pressed={!starredOnly} onClick={() => setStarredOnly(false)}>All Applications ({applications.length})</Button>
+            <Button variant={starredOnly ? 'default' : 'outline'} aria-pressed={starredOnly} onClick={() => setStarredOnly(true)}><Star className="mr-2 h-4 w-4" /> Starred ({starredCount})</Button>
+          </div>
+          {starredOnly && visibleApplications.length === 0 && <p className="py-6 text-muted-foreground">No starred applications yet. Use the star on a candidate to shortlist them.</p>}
           {applications.length === 0 ? (
             <Empty loading={loading} label="No applications yet. Career applications appear here with resume downloads." />
           ) : (
             <div className="grid gap-4 md:grid-cols-2">
-              {applications.map((a) => (
+              {visibleApplications.map((a) => (
                 <div key={a.id} className="rounded-2xl border border-border bg-card/50 p-5">
                   <div className="flex items-start justify-between gap-2">
                     <div>
                       <p className="font-display font-semibold">{a.name}</p>
                       <Badge className="mt-1 rounded-full">{a.role}</Badge>
                     </div>
+                    <Button size="icon" variant="ghost" disabled={savingStars.includes(a.id)} aria-pressed={a.starred === true} aria-label={`${a.starred ? 'Unstar' : 'Star'} ${a.name}`} onClick={() => toggleApplicationStar(a)} className="shrink-0"><Star className={`h-5 w-5 ${a.starred ? 'fill-amber-400 text-amber-400' : 'text-muted-foreground'}`} /></Button>
                     {a.emailStatus && <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${a.emailStatus === 'sent' ? 'bg-emerald-500/15 text-emerald-400' : a.emailStatus === 'failed' ? 'bg-red-500/15 text-red-400' : 'bg-muted text-muted-foreground'}`}>email: {a.emailStatus}</span>}
                   </div>
                   <div className="mt-3 space-y-1.5 text-sm text-muted-foreground">
                     {a.email && <a href={`mailto:${a.email}`} className="flex items-center gap-2 hover:text-foreground"><Mail className="h-3.5 w-3.5" /> {a.email}</a>}
                     {a.phone && <a href={`tel:${a.phone}`} className="flex items-center gap-2 hover:text-foreground"><Phone className="h-3.5 w-3.5" /> {a.phone}</a>}
+                    <p className="flex items-center gap-2"><MapPin className="h-3.5 w-3.5 shrink-0" /> {a.currentLocation || 'Location not provided'}</p>
                     {a.experience && <p className="flex items-center gap-2"><Clock className="h-3.5 w-3.5" /> {a.experience}</p>}
                     {a.company && <p className="flex items-center gap-2"><Building2 className="h-3.5 w-3.5" /> {a.company}</p>}
                     {a.portfolio && <a href={a.portfolio} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-foreground"><ExternalLink className="h-3.5 w-3.5" /> Portfolio / LinkedIn</a>}
